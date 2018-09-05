@@ -14,6 +14,4 @@ func InitHandle(r *server.WWWMux) {
 }
 
 func initAPIMapping(r *server.WWWMux) {
-	// 获取新闻
-	r.RegistURLMapping("/v1/api/news/list", "GET", ajaxListNews)
 }
