@@ -12,7 +12,6 @@
 *.out
 
 .vscode
-_vender/
 bin/
 pkg/
 etc/
