@@ -17,6 +17,7 @@
 * txt - txt类型的引用，value为具体的文本
 * link - link类型的引用，value为链接名称加地址，例如 source=link,value=《XXX杂志》[http://wwww.www.com/aaaa]
 * img - img类型的引用，value为图片地址，内容为图片说明，具体见下文
+* ref - ref类型的引用，引用的value会写在文字的最后
 
 方便起见，如果没有歧义，则可以只写value的值。例如:
 
@@ -66,19 +67,17 @@
 
 列表分为有序列表和无序列表，列表可以进行嵌套。
 
-对于无序列表，通过 * 进行指定，如果要有嵌套的话嵌套的列表需要缩进两个空格:
+对于无序列表，通过 * 进行指定:
 
 * Item 1
 * Item 2
-  * Item 2a
-  * Item 2b
+
 
 对于有序列表，通过 $ 进行指定:
 
 $ Item 1
 $ Item 2
-  $ Item 2a
-  $ Item 2b
+
 
 ## 文字引用
 
@@ -94,5 +93,57 @@ $ Item 2
 这是一张图片
 ```
 
+## JSON格式
 
+整个文章从上至下会被解析为一个字典，格式如下:
+
+{
+  title: 标题，即 # 开头的内容
+  contents: [
+    {
+      type: section -- 表示这个是一个小节，即 ##、###开头的内容
+      section_id: 1.1 -- 表示小节ID，多个section嵌套的话用 点 进行分隔。起始id从1开始依次递增
+      content: 小节名称
+    },
+    {
+      type: ref -- 表示这个是一个yinyong
+      source: img/txt/link/ref
+      value: /xx/a.jpg
+      content: 内容
+    },
+    {
+      type: list
+      ordered: true -- 是否有序，true or false
+      contents: [block, block ...] -- list中的内容，这里每个内容都是一个block类型
+    },
+    {
+      type: block -- block类型表示一段连续文字，可以包含强调、引用等
+      contents: [block_txt, block_underline, block_ref ...] -- 表示这段block的内容
+    }
+  ]
+}
+
+其中:
+
+block_txt: 
+
+{
+  type: block_txt
+  content: "XXX" -- 表示文字内容
+}
+
+block_underline:
+
+{
+  type: block_underline
+  content: "XXX" -- 表示强调内容
+}
+
+block_ref:
+
+{
+  type: block_ref
+  content: "XXX"
+  link: http://xxxx -- 引用地址
+}
 
