@@ -1,0 +1,59 @@
+# 这是一篇测试文章
+
+下面是 ** 测试内容 **
+
+* 首先
+* 然后
+* 其次
+
+现在来一个引用:
+
+``` source=txt, value=这个是一个测试用的引用
+休息休息
+```
+
+来一个图片的引用
+```source=img, value=/aa/asf/jp.jpg
+这是一个图片的说明
+```
+
+来一个link的引用
+``` source=link,value=aaaa
+asfaws
+```
+
+来一个ref的ref
+``` source=ref,value=asfasd
+asfsdaf
+asddfs
+```
+
+``` asfas
+safas
+```
+
+这里来一个 ** 有序 ** 的列子:
+
+$ asdafs
+$ asfas
+
+## 2
+
+### 2.1
+
+#### 2.1.1
+
+### 2.2
+
+### 2.3
+
+#### 2.3.1
+
+#### 2.3.2
+
+## 3
+
+### 3.1
+
+
+这个例子来自于 (XXX杂志)[http://xxx.com.com] **这本书**。**这本书**。**这本书**。

@@ -13,6 +13,7 @@ all: be
 
 be:
 	go install be/cmd/xksjht
+	go install be/cmd/parser
 
 clean:
 	rm -rf bin

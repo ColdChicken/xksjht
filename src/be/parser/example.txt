@@ -35,7 +35,7 @@
 
 #### 小小小节
 
-其中 # 必须是一行的开头，并且随着 # 数目的变化，小节会有一个递进关系。例如:
+其中 # 必须是一行的开头，并且随着 # 数目的变化，小节会有一个递进关系。最多同时四个引号例如:
 
 ## AAA
 
@@ -114,7 +114,7 @@ $ Item 2
     {
       type: list
       ordered: true -- 是否有序，true or false
-      contents: [block, block ...] -- list中的内容，这里每个内容都是一个block类型
+      contents: [txt, txt ...] -- list中的内容
     },
     {
       type: block -- block类型表示一段连续文字，可以包含强调、引用等
