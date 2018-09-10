@@ -23,3 +23,7 @@ func AuthError() *XKSJHTError {
 func RestError() *XKSJHTError {
 	return New("REST交互失败")
 }
+
+func HandleRequestError() *XKSJHTError {
+	return New("服务异常")
+}

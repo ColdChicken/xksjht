@@ -14,4 +14,7 @@ func InitHandle(r *server.WWWMux) {
 }
 
 func initAPIMapping(r *server.WWWMux) {
+	// 列出文章
+	r.RegistURLMapping("/v1/api/article/listbyfilter", "POST", apiListArticles)
+	r.RegistURLMapping("/v1/api/article/listbyfilter", "GET", apiListArticles)
 }
