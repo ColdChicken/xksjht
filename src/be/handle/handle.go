@@ -1,7 +1,9 @@
 package handle
 
 import (
+	"be/options"
 	"be/server"
+	"net/http"
 )
 
 /*
@@ -9,8 +11,24 @@ import (
 * handle包下的handle如果要被实际使用,则都需要在此进行注册
  */
 func InitHandle(r *server.WWWMux) {
+	// 初始化静态文件路径
+	initStaticFileMapping(r)
+	// 初始化管理控制台相关页面
+	initAdminPortalMapping(r)
 	// api相关的接口
 	initAPIMapping(r)
+}
+
+func initStaticFileMapping(r *server.WWWMux) {
+	fs := http.FileServer(http.Dir(options.Options.StaticFilePath))
+	r.GetRouter().PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
+}
+
+func initAdminPortalMapping(r *server.WWWMux) {
+	r.RegistURLMapping("/", "GET", showIndexHtml)
+
+	// 默认路由，配合vue使用
+	r.GetRouter().NotFoundHandler = http.HandlerFunc(server.AccessLogHandler(showIndexHtml))
 }
 
 func initAPIMapping(r *server.WWWMux) {
