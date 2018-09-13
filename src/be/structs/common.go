@@ -19,3 +19,7 @@ type Article struct {
 	OriginalTag int64  `json:"originalTag"`
 	Content     string `json:"content"`
 }
+
+type UserInfo struct {
+	Username string `json:"username"`
+}

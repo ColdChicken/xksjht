@@ -15,3 +15,8 @@ func showIndexHtml(res http.ResponseWriter, req *http.Request) {
 	tmpl, _ := template.ParseFiles(templateRealPath("index.html"))
 	tmpl.ExecuteTemplate(res, "index", nil)
 }
+
+func showLoginHtml(res http.ResponseWriter, req *http.Request) {
+	tmpl, _ := template.ParseFiles(templateRealPath("login.html"))
+	tmpl.ExecuteTemplate(res, "login", nil)
+}

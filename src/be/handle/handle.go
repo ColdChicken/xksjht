@@ -15,6 +15,8 @@ func InitHandle(r *server.WWWMux) {
 	initStaticFileMapping(r)
 	// 初始化管理控制台相关页面
 	initAdminPortalMapping(r)
+	// 初始化管理控制台ajax
+	initAjaxMapping(r)
 	// api相关的接口
 	initAPIMapping(r)
 }
@@ -26,9 +28,17 @@ func initStaticFileMapping(r *server.WWWMux) {
 
 func initAdminPortalMapping(r *server.WWWMux) {
 	r.RegistURLMapping("/", "GET", showIndexHtml)
+	r.RegistURLMapping("/ologin.html", "GET", showLoginHtml)
 
 	// 默认路由，配合vue使用
 	r.GetRouter().NotFoundHandler = http.HandlerFunc(server.AccessLogHandler(showIndexHtml))
+}
+
+func initAjaxMapping(r *server.WWWMux) {
+	// 用户认证密码并生成token
+	r.RegistURLMapping("/v1/ajax/auth/token", "POST", ajaxGenTokenByUMAndPassword)
+	// 获取用户信息
+	r.RegistURLMapping("/v1/ajax/auth/info", "GET", ajaxGetUserInfo)
 }
 
 func initAPIMapping(r *server.WWWMux) {
