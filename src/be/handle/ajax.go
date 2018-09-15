@@ -10,6 +10,11 @@ import (
 	"net/http"
 )
 
+func ajaxLogout(res http.ResponseWriter, req *http.Request) {
+	session.CM.Remove("token", res)
+	http.Redirect(res, req, "/", http.StatusTemporaryRedirect)
+}
+
 func ajaxGenTokenByUMAndPassword(res http.ResponseWriter, req *http.Request) {
 	reqContent, err := ioutil.ReadAll(req.Body)
 	defer req.Body.Close()

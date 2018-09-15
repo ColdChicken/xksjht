@@ -17,7 +17,7 @@ type AuthDao struct {
 
 func (d *AuthDao) GenTokenByUsernameAndPassword(username string, password string) (string, error) {
 	var id int64 = -1
-	cnt, err := mysql.DB.SingleRowQuery("SELECT id FROM USER_AUTH_INFO WHERE username=? AND password=PASSWORD(?)", []interface{}{username, fmt.Sprintf("%s-%s", password, options.Options.PasswordSalt)}, &id)
+	cnt, err := mysql.DB.SingleRowQuery("SELECT id FROM USER_AUTH_INFO WHERE username=? AND password=PASSWORD(PASSWORD(?))", []interface{}{username, fmt.Sprintf("%s-%s", password, options.Options.PasswordSalt)}, &id)
 	if err != nil {
 		log.Errorf("用户密码校验失败: %s %s", username, password)
 		return "", err

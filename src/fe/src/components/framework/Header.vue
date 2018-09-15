@@ -4,6 +4,11 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="#">星空水景论坛 管理控制台</a>
         </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/v1/ajax/auth/logout">Logout</a></li>
+          </ul>
+        </div>
       </div>
     </nav>
 </template>

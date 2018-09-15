@@ -35,6 +35,8 @@ func initAdminPortalMapping(r *server.WWWMux) {
 }
 
 func initAjaxMapping(r *server.WWWMux) {
+	// 注销
+	r.RegistURLMapping("/v1/ajax/auth/logout", "GET", ajaxLogout)
 	// 用户认证密码并生成token
 	r.RegistURLMapping("/v1/ajax/auth/token", "POST", ajaxGenTokenByUMAndPassword)
 	// 获取用户信息
