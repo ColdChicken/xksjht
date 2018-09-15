@@ -15,17 +15,14 @@ type cookieMgr struct {
 	s *securecookie.SecureCookie
 }
 
-var CM *cookieMgr = nil
+var CM *cookieMgr
 
-func doInit() {
+func InitCM() {
 	s := securecookie.New([]byte(options.Options.Cookie01), []byte(options.Options.Cookie02))
 	CM = &cookieMgr{s: s}
 }
 
 func (c *cookieMgr) Set(key string, value string, res http.ResponseWriter) {
-	if CM == nil {
-		doInit()
-	}
 	expiration := time.Now().Add(time.Duration(24) * time.Hour)
 	if encoded, err := c.s.Encode(key, value); err == nil {
 		cookie := &http.Cookie{
@@ -43,9 +40,6 @@ func (c *cookieMgr) Set(key string, value string, res http.ResponseWriter) {
 }
 
 func (c *cookieMgr) Get(key string, req *http.Request) (string, error) {
-	if CM == nil {
-		doInit()
-	}
 	if cookie, err := req.Cookie(key); err == nil {
 		value := ""
 		if err = c.s.Decode(key, cookie.Value, &value); err == nil {
@@ -65,9 +59,6 @@ func (c *cookieMgr) Get(key string, req *http.Request) (string, error) {
 }
 
 func (c *cookieMgr) Remove(key string, res http.ResponseWriter) {
-	if CM == nil {
-		doInit()
-	}
 	// 设置为空字符串即认为删除
 	c.Set(key, "", res)
 }

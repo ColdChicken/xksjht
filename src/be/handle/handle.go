@@ -41,6 +41,10 @@ func initAjaxMapping(r *server.WWWMux) {
 	r.RegistURLMapping("/v1/ajax/auth/token", "POST", ajaxGenTokenByUMAndPassword)
 	// 获取用户信息
 	r.RegistURLMapping("/v1/ajax/auth/info", "GET", ajaxGetUserInfo)
+	// 列出文章
+	r.RegistURLMapping("/v1/ajax/article/listbyfilter", "POST", ajaxListArticlesByFilter)
+	// 创建文章
+	r.RegistURLMapping("/v1/ajax/article/create", "POST", ajaxCreateArticle)
 }
 
 func initAPIMapping(r *server.WWWMux) {

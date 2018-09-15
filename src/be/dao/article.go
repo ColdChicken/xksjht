@@ -22,7 +22,7 @@ func (d *ArticleDao) ListArticlesByFilter(filter *structs.ListArticleFilter) ([]
 	tx := mysql.DB.GetTx()
 
 	if tags != "" {
-		sql := `SELECT id, title, createTime, editTime, creater, tags, originalTag, content 
+		sql := `SELECT id, title, createTime, editTime, creater, tags, originalTag, content, rawContent 
 				FROM ARTICLE
 				WHERE tags=? AND isDeleted=0
 				ORDER BY id DESC
@@ -46,7 +46,7 @@ func (d *ArticleDao) ListArticlesByFilter(filter *structs.ListArticleFilter) ([]
 			} else {
 				for rows.Next() {
 					article := &structs.Article{}
-					if err := rows.Scan(&article.Id, &article.Title, &article.CreateTime, &article.EditTime, &article.Creater, &article.Tags, &article.OriginalTag, &article.Content); err != nil {
+					if err := rows.Scan(&article.Id, &article.Title, &article.CreateTime, &article.EditTime, &article.Creater, &article.Tags, &article.OriginalTag, &article.Content, &article.RawContent); err != nil {
 						log.WithFields(log.Fields{
 							"sql": sql,
 							"err": err.Error(),
@@ -64,7 +64,7 @@ func (d *ArticleDao) ListArticlesByFilter(filter *structs.ListArticleFilter) ([]
 			}
 		}
 	} else {
-		sql := `SELECT id, title, createTime, editTime, creater, tags, originalTag, content 
+		sql := `SELECT id, title, createTime, editTime, creater, tags, originalTag, content, rawContent 
 				FROM ARTICLE
 				WHERE isDeleted=0
 				ORDER BY id DESC
@@ -88,7 +88,7 @@ func (d *ArticleDao) ListArticlesByFilter(filter *structs.ListArticleFilter) ([]
 			} else {
 				for rows.Next() {
 					article := &structs.Article{}
-					if err := rows.Scan(&article.Id, &article.Title, &article.CreateTime, &article.EditTime, &article.Creater, &article.Tags, &article.OriginalTag, &article.Content); err != nil {
+					if err := rows.Scan(&article.Id, &article.Title, &article.CreateTime, &article.EditTime, &article.Creater, &article.Tags, &article.OriginalTag, &article.Content, &article.RawContent); err != nil {
 						log.WithFields(log.Fields{
 							"sql": sql,
 							"err": err.Error(),
@@ -109,4 +109,34 @@ func (d *ArticleDao) ListArticlesByFilter(filter *structs.ListArticleFilter) ([]
 
 	tx.Commit()
 	return articles, nil
+}
+
+func (d *ArticleDao) CreateArticle(title string, creater string, tags string, originalTag int64, content string, rawContent string) error {
+	tx := mysql.DB.GetTx()
+
+	sql := `INSERT INTO ARTICLE(title, createTime, editTime, 
+								creater, tags, originalTag, 
+								content, rawContent, isDeleted) 
+			VALUES(?, NOW(), NOW(), ?, ?, ?, ?, ?, 0)`
+	stmt, err := tx.Prepare(sql)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"sql": sql,
+			"err": err.Error(),
+		}).Error("prepare错误")
+		tx.Rollback()
+		return err
+	}
+	_, err = stmt.Exec(title, creater, tags, originalTag, content, rawContent)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Error("query错误")
+		stmt.Close()
+		tx.Rollback()
+		return err
+	}
+	stmt.Close()
+	tx.Commit()
+	return nil
 }

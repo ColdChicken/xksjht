@@ -13,6 +13,7 @@ import (
 	"be/mysql"
 	"be/options"
 	"be/server"
+	"be/session"
 )
 
 func doServe() {
@@ -51,6 +52,8 @@ func main() {
 	log.InitLog()
 	// 可以使用log了
 	log.Infoln("日志文件初始化成功")
+	// 初始化cookie
+	session.InitCM()
 	// 启动服务
 	doServe()
 }

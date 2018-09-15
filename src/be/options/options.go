@@ -33,6 +33,9 @@ type WWWOptions struct {
 	DBMaxOpenConn int
 	// MySQL 最大闲置连接数
 	DBMaxIdleConn int
+
+	// 文章的默认创建人
+	DefaultArticleCreater string
 }
 
 var Options WWWOptions
@@ -50,6 +53,7 @@ func (o *WWWOptions) InitOptions() {
 	flag.StringVar(&o.PasswordSalt, "password_salt", "", "PasswordSalt")
 	flag.StringVar(&o.Cookie01, "cookie_01", "", "Cookie01")
 	flag.StringVar(&o.Cookie02, "cookie_02", "", "Cookie02")
+	flag.StringVar(&o.DefaultArticleCreater, "default_article_creater", "CC", "DefaultArticleCreater")
 
 	iniflags.Parse()
 }

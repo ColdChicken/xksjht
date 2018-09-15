@@ -18,8 +18,16 @@ type Article struct {
 	Tags        string `json:"tags"`
 	OriginalTag int64  `json:"originalTag"`
 	Content     string `json:"content"`
+	RawContent  string `json:"rawContent"`
 }
 
 type UserInfo struct {
 	Username string `json:"username"`
+}
+
+type CreateArticleRequest struct {
+	Creater     string `json:"creater"`
+	Tags        string `json:"tags"`
+	OriginalTag int64  `json:"originalTag"`
+	RawContent  string `json:"rawContent"`
 }

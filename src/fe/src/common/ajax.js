@@ -83,6 +83,8 @@ const Ajax = (($) => {
                   async=true,
                   success=()=>{},
                   error=(jqXHR, textStatus, errorThrown)=>{
+                    console.log(jqXHR)
+                    console.log(errorThrown)
                     var err_msg = jqXHR.responseJSON['msg']
                     alert(err_msg);
                     return false;
