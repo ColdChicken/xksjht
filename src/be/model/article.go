@@ -63,3 +63,40 @@ func (m *ArticleMgr) CreateArticle(request *structs.CreateArticleRequest) error 
 
 	return nil
 }
+
+func (m *ArticleMgr) UpdateArticle(request *structs.UpdateArticleRequest) error {
+	if request.OriginalTag != 0 && request.OriginalTag != 1 {
+		return xe.New("原创标签无效")
+	}
+	p := parser.NewParser()
+	err := p.Parser(request.RawContent)
+	if err != nil {
+		log.Errorln(err.Error())
+		return err
+	}
+	articleInfo := p.GetResult()
+	b, err := json.MarshalIndent(articleInfo, "", "    ")
+	if err != nil {
+		log.Errorln(err.Error())
+		return err
+	}
+	title := articleInfo.Title
+	if title == "" {
+		return xe.New("文章标题不存在")
+	}
+
+	err = m.dao.EditArticle(request.ArticleId, title, request.Tags, request.OriginalTag, string(b), request.RawContent)
+	if err != nil {
+		log.Errorln(err.Error())
+		return err
+	}
+	return nil
+}
+
+func (m *ArticleMgr) DeleteArticle(articleId int64) error {
+	return m.dao.DeleteArticle(articleId)
+}
+
+func (m *ArticleMgr) ListDeletedArticles() ([]*structs.Article, error) {
+	return m.dao.ListDeletedArticles()
+}

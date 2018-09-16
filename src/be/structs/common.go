@@ -31,3 +31,10 @@ type CreateArticleRequest struct {
 	OriginalTag int64  `json:"originalTag"`
 	RawContent  string `json:"rawContent"`
 }
+
+type UpdateArticleRequest struct {
+	ArticleId   int64  `json:"articleId"`
+	Tags        string `json:"tags"`
+	OriginalTag int64  `json:"originalTag"`
+	RawContent  string `json:"rawContent"`
+}

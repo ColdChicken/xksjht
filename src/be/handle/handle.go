@@ -45,6 +45,12 @@ func initAjaxMapping(r *server.WWWMux) {
 	r.RegistURLMapping("/v1/ajax/article/listbyfilter", "POST", ajaxListArticlesByFilter)
 	// 创建文章
 	r.RegistURLMapping("/v1/ajax/article/create", "POST", ajaxCreateArticle)
+	// 更新文章
+	r.RegistURLMapping("/v1/ajax/article/update", "POST", ajaxUpdateArticle)
+	// 删除文章
+	r.RegistURLMapping("/v1/ajax/article/delete", "POST", ajaxDeleteArticle)
+	// 列出被删除的文章
+	r.RegistURLMapping("/v1/ajax/article/listdeleted", "POST", ajaxListDeletedArticles)
 }
 
 func initAPIMapping(r *server.WWWMux) {

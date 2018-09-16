@@ -166,3 +166,99 @@ func ajaxCreateArticle(res http.ResponseWriter, req *http.Request) {
 	}
 	common.ResSuccessMsg(res, 200, "操作成功")
 }
+
+func ajaxDeleteArticle(res http.ResponseWriter, req *http.Request) {
+	if err := tokenValidation(req); err != nil {
+		common.ResMsg(res, 400, "认证失败")
+		return
+	}
+
+	reqContent, err := ioutil.ReadAll(req.Body)
+	defer req.Body.Close()
+	if err != nil {
+		log.WithFields(log.Fields{}).Error("请求报文解析失败")
+		common.ResInvalidRequestBody(res)
+		return
+	}
+
+	type Request struct {
+		ArticleId int64 `json:"articleId"`
+	}
+
+	request := &Request{}
+	if err := common.ParseJsonStr(string(reqContent), request); err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Error("解析模板JSON失败")
+		common.ResMsg(res, 400, err.Error())
+		return
+	}
+	err = model.Article.DeleteArticle(request.ArticleId)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Error("model调用失败")
+		common.ResMsg(res, 400, err.Error())
+		return
+	}
+	common.ResSuccessMsg(res, 200, "操作成功")
+}
+
+func ajaxListDeletedArticles(res http.ResponseWriter, req *http.Request) {
+	if err := tokenValidation(req); err != nil {
+		common.ResMsg(res, 400, "认证失败")
+		return
+	}
+
+	articles, err := model.Article.ListDeletedArticles()
+	if err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Error("model调用失败")
+		common.ResMsg(res, 400, err.Error())
+		return
+	}
+
+	b, err := json.Marshal(articles)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Error("JSON生成失败")
+		common.ResMsg(res, 500, err.Error())
+		return
+	}
+	common.ResMsg(res, 200, string(b))
+}
+
+func ajaxUpdateArticle(res http.ResponseWriter, req *http.Request) {
+	if err := tokenValidation(req); err != nil {
+		common.ResMsg(res, 400, "认证失败")
+		return
+	}
+
+	reqContent, err := ioutil.ReadAll(req.Body)
+	defer req.Body.Close()
+	if err != nil {
+		log.WithFields(log.Fields{}).Error("请求报文解析失败")
+		common.ResInvalidRequestBody(res)
+		return
+	}
+
+	request := &structs.UpdateArticleRequest{}
+	if err := common.ParseJsonStr(string(reqContent), request); err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Error("解析模板JSON失败")
+		common.ResMsg(res, 400, err.Error())
+		return
+	}
+	err = model.Article.UpdateArticle(request)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Error("model调用失败")
+		common.ResMsg(res, 400, err.Error())
+		return
+	}
+	common.ResSuccessMsg(res, 200, "操作成功")
+}
