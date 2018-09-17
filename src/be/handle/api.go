@@ -23,7 +23,8 @@ func apiListArticles(res http.ResponseWriter, req *http.Request) {
 	request := &structs.ListArticleFilter{}
 	if err := common.ParseJsonStr(string(reqContent), request); err != nil {
 		log.WithFields(log.Fields{
-			"err": err.Error(),
+			"err":     err.Error(),
+			"request": string(reqContent),
 		}).Error("解析模板JSON失败")
 		common.ResMsg(res, 400, xe.HandleRequestError().Error())
 		return
