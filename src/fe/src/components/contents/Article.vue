@@ -254,6 +254,8 @@ export default {
         tags: [],
         currentPos: 0,
         requestCnt: 99999,
+        containContent: 1,
+
       },
       that.articleRawContent = ""
       that.articleTags = ""

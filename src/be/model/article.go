@@ -22,12 +22,30 @@ func init() {
 	}
 }
 
+func (m *ArticleMgr) GetArticle(id int64) (*structs.Article, error) {
+	article, err := m.dao.GetArticleById(id)
+	if err != nil {
+		return nil, err
+	}
+	if article.Id == -1 {
+		return nil, xe.New("文章不存在")
+	}
+	return article, nil
+}
+
 func (m *ArticleMgr) ListArticles(filter *structs.ListArticleFilter) ([]*structs.Article, error) {
 	articles := []*structs.Article{}
 	articles, err := m.dao.ListArticlesByFilter(filter)
 	if err != nil {
 		log.Errorf("ListArticles 失败： %s", err.Error())
 		return nil, err
+	}
+	// 是否要返回文章内容，对于小程序来说不返回这个可以减少网络开销
+	if filter.ContainContent == 0 {
+		for _, article := range articles {
+			article.Content = ""
+			article.RawContent = ""
+		}
 	}
 	return articles, nil
 }

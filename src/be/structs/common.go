@@ -7,6 +7,8 @@ type ListArticleFilter struct {
 	CurrentPos int64 `json:"currentPos"`
 	// 请求的文章数目
 	RequestCnt int64 `json:"requestCnt"`
+	// 是否包含文章内容
+	ContainContent int64 `json:"containContent"`
 }
 
 type Article struct {

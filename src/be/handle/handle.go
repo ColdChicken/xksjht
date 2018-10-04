@@ -57,4 +57,7 @@ func initAPIMapping(r *server.WWWMux) {
 	// 列出文章
 	r.RegistURLMapping("/v1/api/article/listbyfilter", "POST", apiListArticles)
 	r.RegistURLMapping("/v1/api/article/listbyfilter", "GET", apiListArticles)
+	// 获取文章详情
+	r.RegistURLMapping("/v1/api/article/getbyid", "POST", apiGetArticleById)
+	r.RegistURLMapping("/v1/api/article/getbyid", "GET", apiGetArticleById)
 }

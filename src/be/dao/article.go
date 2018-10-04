@@ -59,6 +59,50 @@ func (d *ArticleDao) ListDeletedArticles() ([]*structs.Article, error) {
 	return articles, nil
 }
 
+func (d *ArticleDao) GetArticleById(id int64) (*structs.Article, error) {
+	article := &structs.Article{Id: -1}
+	tx := mysql.DB.GetTx()
+	sql := `SELECT id, title, createTime, editTime, creater, tags, originalTag, content, rawContent 
+				FROM ARTICLE
+				WHERE isDeleted=0
+				AND id=?`
+	if stmt, err := tx.Prepare(sql); err != nil {
+		log.WithFields(log.Fields{
+			"sql": sql,
+			"err": err.Error(),
+		}).Error("GetArticleById prepare错误")
+		tx.Rollback()
+		return nil, err
+	} else {
+		if rows, err := stmt.Query(id); err != nil {
+			log.WithFields(log.Fields{
+				"sql": sql,
+				"err": err.Error(),
+			}).Error("GetArticleById prepare错误")
+			stmt.Close()
+			tx.Rollback()
+			return nil, err
+		} else {
+			for rows.Next() {
+				if err := rows.Scan(&article.Id, &article.Title, &article.CreateTime, &article.EditTime, &article.Creater, &article.Tags, &article.OriginalTag, &article.Content, &article.RawContent); err != nil {
+					log.WithFields(log.Fields{
+						"sql": sql,
+						"err": err.Error(),
+					}).Error("ListArticlesByFilter prepare错误")
+					rows.Close()
+					stmt.Close()
+					tx.Rollback()
+					return nil, err
+				}
+			}
+			rows.Close()
+			stmt.Close()
+		}
+	}
+	tx.Commit()
+	return article, nil
+}
+
 func (d *ArticleDao) ListArticlesByFilter(filter *structs.ListArticleFilter) ([]*structs.Article, error) {
 	articles := []*structs.Article{}
 
