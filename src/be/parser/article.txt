@@ -28,6 +28,12 @@ asfsdaf
 asddfs
 ```
 
+来一个ref的ref222
+``` source=ref,value=asfasd222
+asfsdaf222
+asddfs
+```
+
 ``` asfas
 safas
 ```

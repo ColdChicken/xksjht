@@ -1,6 +1,7 @@
 package model
 
 import (
+	"be/common"
 	xe "be/common/error"
 	"be/common/log"
 	"be/dao"
@@ -8,6 +9,7 @@ import (
 	"be/parser"
 	"be/structs"
 	"encoding/json"
+	"fmt"
 )
 
 type ArticleMgr struct {
@@ -30,6 +32,41 @@ func (m *ArticleMgr) GetArticle(id int64) (*structs.Article, error) {
 	if article.Id == -1 {
 		return nil, xe.New("文章不存在")
 	}
+
+	// 处理图片信息
+	content := &structs.ParserResult{}
+	if err := common.ParseJsonStr(article.Content, &content); err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Error("解析模板JSON失败")
+		return nil, err
+	}
+
+	for _, c := range content.Contents {
+		if c.Type == "ref" && c.Source == "img" {
+			picLocation, err := Pic.TranslatePic(c.Value)
+			if err != nil {
+				log.WithFields(log.Fields{
+					"err": err.Error(),
+				}).Error("获取图片路径信息失败")
+				c.Value = fmt.Sprintf("%s/%s", options.Options.PicExternalRootPath, "404")
+			} else {
+				c.Value = fmt.Sprintf("%s/%s", options.Options.PicExternalRootPath, picLocation)
+			}
+
+		}
+	}
+
+	b, err := json.Marshal(content)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Error("JSON生成失败")
+		return article, nil
+	} else {
+		article.Content = string(b)
+	}
+
 	return article, nil
 }
 

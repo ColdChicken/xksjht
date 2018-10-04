@@ -34,6 +34,12 @@ type WWWOptions struct {
 	// MySQL 最大闲置连接数
 	DBMaxIdleConn int
 
+	// 本地图片存放路径
+	LocalPicRootPath string
+
+	// 图片的默认对外地址根路径
+	PicExternalRootPath string
+
 	// 文章的默认创建人
 	DefaultArticleCreater string
 }
@@ -54,6 +60,8 @@ func (o *WWWOptions) InitOptions() {
 	flag.StringVar(&o.Cookie01, "cookie_01", "", "Cookie01")
 	flag.StringVar(&o.Cookie02, "cookie_02", "", "Cookie02")
 	flag.StringVar(&o.DefaultArticleCreater, "default_article_creater", "CC", "DefaultArticleCreater")
+	flag.StringVar(&o.LocalPicRootPath, "local_pic_root_path", "D:\\logs\\pics", "LocalPicRootPath")
+	flag.StringVar(&o.PicExternalRootPath, "pic_external_root_path", "http://192.168.1.102:8888/v1/api/file/pic/download", "PicExternalRootPath")
 
 	iniflags.Parse()
 }

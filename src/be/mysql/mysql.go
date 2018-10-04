@@ -1,19 +1,20 @@
 package mysql
 
 import (
-	"database/sql"
-    _ "github.com/go-sql-driver/mysql"
-	"be/options"
-	"be/common/log"
 	ae "be/common/error"
+	"be/common/log"
+	"be/options"
+	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type MySQLUtil struct {
-	db	*sql.DB
-	initialized	bool
+	db          *sql.DB
+	initialized bool
 }
 
-var DB = MySQLUtil{db:nil, initialized:false}
+var DB = MySQLUtil{db: nil, initialized: false}
 
 func (m *MySQLUtil) InitConn() {
 	m.CloseConn()
@@ -21,8 +22,8 @@ func (m *MySQLUtil) InitConn() {
 	db, err := sql.Open("mysql", options.Options.DataSourceName)
 	if err != nil {
 		log.WithFields(log.Fields{
-					"err": err.Error(),
-				}).Error("MySQL conn error")
+			"err": err.Error(),
+		}).Error("MySQL conn error")
 		panic(err)
 	}
 
@@ -32,8 +33,8 @@ func (m *MySQLUtil) InitConn() {
 	err = db.Ping()
 	if err != nil {
 		log.WithFields(log.Fields{
-					"err": err.Error(),
-				}).Error("MySQL conn error")
+			"err": err.Error(),
+		}).Error("MySQL conn error")
 		panic(err)
 	}
 
@@ -72,8 +73,8 @@ func (m *MySQLUtil) GetTx() *sql.Tx {
 	tx, err := m.db.Begin()
 	if err != nil {
 		log.WithFields(log.Fields{
-					"err": err.Error(),
-				}).Error("Get txn error")
+			"err": err.Error(),
+		}).Error("Get txn error")
 		return nil
 	}
 	return tx
@@ -126,7 +127,7 @@ func (m *MySQLUtil) SingleRowQuery(sql string, args []interface{}, result ...int
 	err = rows.Err()
 	if err != nil {
 		log.WithFields(log.Fields{
-		        "err": err.Error(),
+			"err": err.Error(),
 		}).Error("SingleRowQuery rows.Err错误")
 		rows.Close()
 		stmt.Close()
@@ -134,8 +135,8 @@ func (m *MySQLUtil) SingleRowQuery(sql string, args []interface{}, result ...int
 		return -1, ae.DBError()
 	}
 	rows.Close()
-        stmt.Close()
-        tx.Commit()
+	stmt.Close()
+	tx.Commit()
 	return cnt, nil
 
 }
@@ -156,7 +157,7 @@ func (m *MySQLUtil) SimpleInsert(sql string, args ...interface{}) error {
 			"err": err.Error(),
 		}).Error("SimpleInsert prepare错误")
 		tx.Rollback()
-		return ae.DBError()
+		return err
 	}
 	_, err = stmt.Exec(args...)
 	if err != nil {
@@ -165,7 +166,7 @@ func (m *MySQLUtil) SimpleInsert(sql string, args ...interface{}) error {
 		}).Error("SimpleInsert exec错误")
 		stmt.Close()
 		tx.Rollback()
-		return ae.DBError()
+		return err
 	}
 	stmt.Close()
 	err = tx.Commit()
@@ -173,7 +174,7 @@ func (m *MySQLUtil) SimpleInsert(sql string, args ...interface{}) error {
 		log.WithFields(log.Fields{
 			"err": err.Error(),
 		}).Error("SimpleInsert commit错误")
-		return ae.DBError()
+		return err
 	}
 	return nil
 }

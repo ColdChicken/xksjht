@@ -51,6 +51,14 @@ func initAjaxMapping(r *server.WWWMux) {
 	r.RegistURLMapping("/v1/ajax/article/delete", "POST", ajaxDeleteArticle)
 	// 列出被删除的文章
 	r.RegistURLMapping("/v1/ajax/article/listdeleted", "POST", ajaxListDeletedArticles)
+	// 上传图片
+	r.RegistURLMapping("/v1/ajax/file/pic/upload", "POST", ajaxUploadPic)
+	// 下载图片
+	r.RegistURLMapping("/v1/ajax/file/pic/download/{location}", "GET", ajaxDownloadPic)
+	// 列出所有图片信息
+	r.RegistURLMapping("/v1/ajax/file/pic/list", "POST", ajaxListPics)
+	// 删除图片
+	r.RegistURLMapping("/v1/ajax/file/pic/delete", "POST", ajaxDeletePic)
 }
 
 func initAPIMapping(r *server.WWWMux) {
@@ -60,4 +68,6 @@ func initAPIMapping(r *server.WWWMux) {
 	// 获取文章详情
 	r.RegistURLMapping("/v1/api/article/getbyid", "POST", apiGetArticleById)
 	r.RegistURLMapping("/v1/api/article/getbyid", "GET", apiGetArticleById)
+	// 下载图片
+	r.RegistURLMapping("/v1/api/file/pic/download/{location}", "GET", apiDownloadPic)
 }

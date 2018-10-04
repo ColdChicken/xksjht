@@ -40,3 +40,12 @@ type UpdateArticleRequest struct {
 	OriginalTag int64  `json:"originalTag"`
 	RawContent  string `json:"rawContent"`
 }
+
+type PicInfo struct {
+	Id         int64  `json:"id"`
+	Name       string `json:"name"`
+	RelPath    string `json:"relPath"`
+	CreateTime string `json:"createTime"`
+	Location   string `json:"location"`
+	Type       string `json:"type"`
+}

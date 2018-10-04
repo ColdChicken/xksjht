@@ -14,7 +14,7 @@
 
 这里第一个```后面跟着的是引用的类型及类型的具体内容。目前支持下面的类型:
 
-* txt - txt类型的引用，value为具体的文本
+* txt - txt类型的引用， ** value为 ** 具体的文本
 * link - link类型的引用，value为链接名称加地址，例如 source=link,value=《XXX杂志》[http://wwww.www.com/aaaa]
 * img - img类型的引用，value为图片地址，内容为图片说明，具体见下文
 * ref - ref类型的引用，引用的value会写在文字的最后

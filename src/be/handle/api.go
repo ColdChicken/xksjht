@@ -7,8 +7,11 @@ import (
 	"be/model"
 	"be/structs"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func apiGetArticleById(res http.ResponseWriter, req *http.Request) {
@@ -91,4 +94,26 @@ func apiListArticles(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	common.ResMsg(res, 200, string(b))
+}
+
+func apiDownloadPic(res http.ResponseWriter, req *http.Request) {
+	location := ""
+
+	variables := mux.Vars(req)
+	if _, ok := variables["location"]; !ok {
+		log.WithFields(log.Fields{}).Error("location不在URL中")
+		common.ResMsg(res, 400, xe.HandleRequestError().Error())
+		return
+	}
+	location = variables["location"]
+
+	data, picName, picType, err := model.Pic.DownloadPic(location)
+	if err != nil {
+		log.Errorln(err.Error())
+		common.ResMsg(res, 400, xe.HandleRequestError().Error())
+		return
+	}
+	res.Header().Set("Content-Disposition", fmt.Sprintf("inline; filename=%s", picName))
+	res.Header().Set("Content-Type", fmt.Sprintf("image/%s", picType))
+	res.Write(data)
 }
