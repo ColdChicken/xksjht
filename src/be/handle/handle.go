@@ -27,11 +27,17 @@ func initStaticFileMapping(r *server.WWWMux) {
 }
 
 func initAdminPortalMapping(r *server.WWWMux) {
-	r.RegistURLMapping("/", "GET", showIndexHtml)
-	r.RegistURLMapping("/ologin.html", "GET", showLoginHtml)
+	// 后台
+	r.RegistURLMapping("/ht", "GET", showIndexHtml)
+	r.RegistURLMapping("/ht/ologin.html", "GET", showLoginHtml)
 
-	// 默认路由，配合vue使用
-	r.GetRouter().NotFoundHandler = http.HandlerFunc(server.AccessLogHandler(showIndexHtml))
+	// 前台
+	r.RegistURLMapping("/", "GET", showZiXunHtml)
+	r.RegistURLMapping("/zx", "GET", showZiXunHtml)
+	r.RegistURLMapping("/sj", "GET", showShuiJingHtml)
+	r.RegistURLMapping("/wz", "GET", showWenZhangHtml)
+	r.RegistURLMapping("/qt", "GET", showQiTaHtml)
+	r.RegistURLMapping("/article/{id}", "GET", showArticleHtml)
 }
 
 func initAjaxMapping(r *server.WWWMux) {

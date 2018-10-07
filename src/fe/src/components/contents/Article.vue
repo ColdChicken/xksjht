@@ -30,7 +30,8 @@
                 <th style="width: 25%">标题</th>
                 <th style="width: 10%">创建人</th>
                 <th style="width: 10%">创建时间</th>
-                <th style="width: 25%">标签</th>
+                <th style="width: 5%">类别</th>
+                <th style="width: 20%">标签</th>
                 <th style="width: 5%">原创</th>
 				        <th style="width: 30%">操作</th>
               </tr>
@@ -41,6 +42,7 @@
                 <td>{{article['title']}}</td>
                 <td>{{article['creater']}}</td>
                 <td>{{article['createTime']}}</td>
+                <td>{{article['catalog']}}</td>
                 <td>{{article['tags']}}</td>
 				        <td>{{article['originalTag']}}</td>
                 <td><a href="javascript:void(0)" @click="showContent(article['id'])" >内容</a>&nbsp;<a href="javascript:void(0)" @click="deleteArticle(article['id'])" >删除</a>&nbsp;<a href="javascript:void(0)" @click="updateArticle(article['id'])" >编辑</a></td>
@@ -56,7 +58,8 @@
                 <th style="width: 25%">标题</th>
                 <th style="width: 10%">创建人</th>
                 <th style="width: 10%">创建时间</th>
-                <th style="width: 25%">标签</th>
+                <th style="width: 5%">类别</th>
+                <th style="width: 20%">标签</th>
                 <th style="width: 5%">原创</th>
 				        <th style="width: 30%">操作</th>
               </tr>
@@ -67,6 +70,7 @@
                 <td>{{article['title']}}</td>
                 <td>{{article['creater']}}</td>
                 <td>{{article['createTime']}}</td>
+                <td>{{article['catalog']}}</td>
                 <td>{{article['tags']}}</td>
 				        <td>{{article['originalTag']}}</td>
                 <td><a href="javascript:void(0)" @click="showContent(article['id'])" >内容</a>&nbsp;<a href="javascript:void(0)" @click="updateArticle(article['id'])" >编辑</a></td>
@@ -95,6 +99,19 @@
                 <label>标签:</label>
                 <div>
                       <input type="text" class="col-xs-12 col-sm-9" v-model="articleTags"/>
+                </div>
+              </div>
+              <div style='clear:both'></div>
+
+              <div class="form-group">
+                <label>类别:</label>
+                <div>
+                      <select v-model="articleCatalog">
+                        <option value='资讯'>资讯</option>
+                        <option value='水景'>水景</option>
+                        <option value='文章'>文章</option>
+                        <option value='其它'>其它</option>
+                      </select>
                 </div>
               </div>
               <div style='clear:both'></div>
@@ -239,6 +256,7 @@ export default {
       articleEditTags: "",
       articleEditOriginalTag: 0,
       articleEditRawContent: "",
+      articleCatalog: "资讯",
     }
   },
   mounted () {
@@ -267,6 +285,7 @@ export default {
       that.articleEditTags = ""
       that.articleEditOriginalTag = 0
       that.articleEditRawContent = ""
+      that.articleCatalog = "资讯"
 
       that.syncArticles()
       that.syncDeletedArticles()
@@ -340,6 +359,7 @@ export default {
           originalTag: parseInt(that.articleOriginalTag),
           rawContent: that.articleRawContent,
           tags: tags,
+          catalog: that.articleCatalog,
         },
         true,
         // success

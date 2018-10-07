@@ -15,6 +15,15 @@ type WWWOptions struct {
 	HTTPAddress string
 	HTTPPort    uint64
 
+	// 是否使用HTTPS
+	EnableTls bool
+
+	// HTTPS服务监听地址
+	HTTPSAddr string
+	// TLS
+	CertFile string
+	KeyFile  string
+
 	// 静态文件路径
 	StaticFilePath string
 	// 页面模板文件路径
@@ -62,6 +71,10 @@ func (o *WWWOptions) InitOptions() {
 	flag.StringVar(&o.DefaultArticleCreater, "default_article_creater", "CC", "DefaultArticleCreater")
 	flag.StringVar(&o.LocalPicRootPath, "local_pic_root_path", "D:\\logs\\pics", "LocalPicRootPath")
 	flag.StringVar(&o.PicExternalRootPath, "pic_external_root_path", "http://192.168.1.102:8888/v1/api/file/pic/download", "PicExternalRootPath")
+	flag.StringVar(&o.HTTPSAddr, "https_addr", "0.0.0.0:443", "HTTPSAddr")
+	flag.StringVar(&o.CertFile, "cert_file", "./key/server.pem", "CertFile")
+	flag.StringVar(&o.KeyFile, "key_file", "./key/server.key", "KeyFile")
+	flag.BoolVar(&o.EnableTls, "enable_tls", false, "EnableTls")
 
 	iniflags.Parse()
 }

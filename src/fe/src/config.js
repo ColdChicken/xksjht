@@ -1,6 +1,6 @@
 const Config = {
     USER_INFO_URL: "/v1/ajax/auth/info",
-    LOGIN_PAGE: "/ologin.html",
+    LOGIN_PAGE: "/ht/ologin.html",
     LIST_ARTICLE_URL: "/v1/ajax/article/listbyfilter",
     CREATE_ARTICLE_URL: "/v1/ajax/article/create",
     DELETE_ARTICLE_URL: "/v1/ajax/article/delete",

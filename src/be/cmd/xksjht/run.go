@@ -29,16 +29,35 @@ func doServe() {
 	mux := server.New()
 	// URL映射
 	handle.InitHandle(mux)
-	srv := &http.Server{
-		Handler:      mux.GetRouter(),
-		Addr:         options.Options.HTTPAddress + ":" + strconv.FormatUint(options.Options.HTTPPort, 10),
-		WriteTimeout: 15 * time.Hour,
-		ReadTimeout:  15 * time.Hour,
-		ErrorLog:     go_log.New(log.StandardLogger().Writer(), "", 0),
+	if options.Options.EnableTls {
+		// HTTP服务重定向到HTTPS
+		go http.ListenAndServe(options.Options.HTTPAddress+":"+strconv.FormatUint(options.Options.HTTPPort, 10), http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+			http.Redirect(res, req, "https://"+req.Host+req.URL.String(), http.StatusMovedPermanently)
+		}))
+
+		srv := &http.Server{
+			Handler:      mux.GetRouter(),
+			Addr:         options.Options.HTTPSAddr,
+			WriteTimeout: 60 * time.Second,
+			ReadTimeout:  60 * time.Second,
+			ErrorLog:     go_log.New(log.StandardLogger().Writer(), "", 0),
+		}
+
+		// 启动主服务
+		log.Fatal(srv.ListenAndServeTLS(options.Options.CertFile, options.Options.KeyFile))
+	} else {
+		srv := &http.Server{
+			Handler:      mux.GetRouter(),
+			Addr:         options.Options.HTTPAddress + ":" + strconv.FormatUint(options.Options.HTTPPort, 10),
+			WriteTimeout: 60 * time.Second,
+			ReadTimeout:  60 * time.Second,
+			ErrorLog:     go_log.New(log.StandardLogger().Writer(), "", 0),
+		}
+
+		// 启动主服务
+		log.Fatal(srv.ListenAndServe())
 	}
 
-	// 启动主服务
-	log.Fatal(srv.ListenAndServe())
 }
 
 func main() {

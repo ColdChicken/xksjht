@@ -25,6 +25,11 @@ fe: webpack
 	rm -rf src/fe/dist/index.html
 	mv src/fe/dist/_index.html src/fe/dist/index.html
 	cp src/fe/src/assets/login.html src/fe/dist/login.html
+	cp src/fe/src/assets/www_base.html src/fe/dist/www_base.html
+	cp src/fe/src/assets/www_articles.html src/fe/dist/www_articles.html
+	cp src/fe/src/assets/www_article.html src/fe/dist/www_article.html
+	cp src/fe/src/assets/www.css src/fe/dist/static/www.css
+	cp src/fe/src/assets/weibo.jpg src/fe/dist/static/weibo.jpg
 
 clean:
 	rm -rf bin

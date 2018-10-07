@@ -36,7 +36,7 @@ func tokenValidation(req *http.Request) error {
 
 func ajaxLogout(res http.ResponseWriter, req *http.Request) {
 	session.CM.Remove("token", res)
-	http.Redirect(res, req, "/", http.StatusTemporaryRedirect)
+	http.Redirect(res, req, "/ht", http.StatusTemporaryRedirect)
 }
 
 func ajaxGenTokenByUMAndPassword(res http.ResponseWriter, req *http.Request) {

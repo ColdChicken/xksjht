@@ -1,0 +1,9 @@
+{{define "articles"}}
+
+{{ range .Articles}}
+<div class="record">
+    <a target="_blank" href="/article/{{.Id}}" class="record-link">{{.Title}}</a>&nbsp;&nbsp;<span class="record-info">{{.Creater}}&nbsp;&nbsp;&nbsp;{{.CreateTime}}</span>
+</div>
+{{ end }}
+
+{{end}}

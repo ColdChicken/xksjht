@@ -1,0 +1,128 @@
+{{define "article"}}
+
+<div class="article">
+
+    <div class="article-title">
+        {{.Article.Title}}
+    </div>
+
+    <div class="article-metadata">
+        {{.Article.Creater}}&nbsp;&nbsp;{{.Article.CreateTime}}
+    </div>
+
+    {{ range .Article.ParsedContent.Contents}}
+
+        {{ if (eq .Type "block") }}
+            <div class="article-block">
+                {{ range .Contents}}
+                    {{ if (eq .Type "block_txt")}}
+                        <div class="article-block-txt">
+                            {{.Content}}
+                        </div>
+                    {{ end }}
+
+                    {{ if (eq .Type "block_underline")}}
+                        <div class="article-block-underline">
+                            {{.Content}}
+                        </div>
+                    {{ end }}
+
+                    {{ if (eq .Type "block_ref")}}
+                        <div class="article-block-ref">
+                            {{.Content}}&nbsp;[{{.RefIdx}}]
+                        </div>
+                    {{ end }}
+                {{ end }}
+            </div>
+        {{ end }}
+
+        {{ if (eq .Type "ref") }}
+            {{ if or (eq .Source "txt") (eq .Source "ref") }}
+                <div class="article-ref-txt">
+                    <div class="article-ref-txt-content">{{.Content}}</div>
+                    <div class="article-ref-txt-value">
+                        ---&nbsp;{{.Value}}
+                    </div>
+                </div>
+            {{ end }}
+
+            {{ if (eq .Source "link") }}
+                <div class="article-ref-txt">
+                    <div class="article-ref-txt-content">{{.Content}}</div>
+                </div>
+            {{ end }}
+
+            {{ if (eq .Source "img") }}
+            <div class="article-ref-img">
+                    <img src="{{.Value}}"></img>
+                    <div class="article-ref-img-comment">
+                        {{.Content}}
+                    </div>
+            </div>
+            {{ end }}
+        {{ end }}
+
+        {{ if (eq .Type "list") }}
+            {{ if (eq .Ordered true)}}
+                <div class="article-list-ordered">
+                    {{ range $i, $item := .Contents}}
+                        <div class="article-list-record">
+                            {{$i}}.&nbsp;{{ $item.Content }}
+                        </div>
+                    {{ end }}
+                </div>
+            {{ else }}
+                <div class="article-list-unordered">
+                    {{ range .Contents}}
+                        <div class="article-list-record">
+                            *&nbsp;{{ .Content }}
+                        </div>
+                    {{ end }}
+                </div>
+            {{ end }}
+        {{ end }}
+
+        {{ if (eq .Type "section") }}
+            {{ if (eq .SectionLevel 1) }}
+                <div class="article-section-1">
+                    {{.Content}}
+                </div>
+            {{ end }}
+
+            {{ if (eq .SectionLevel 2) }}
+                <div class="article-section-2">
+                    {{.Content}}
+                </div>
+            {{ end }}
+
+            {{ if (eq .SectionLevel 3) }}
+                <div class="article-section-3">
+                    {{.Content}}
+                </div>
+            {{ end }}
+        {{ end }}
+
+    {{ end }}
+
+    <div class="article-reflist">
+        {{ range .Article.ParsedContent.Contents}}
+            {{ if (eq .Type "block")}}
+                {{ range .Contents}}
+                    {{ if (eq .Type "block_ref")}}
+                        <div class="article-reflist-record">
+                            [{{.RefIdx}}]&nbsp;{{.Link}}
+                        </div>
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+        {{ end }}
+    </div>
+
+    <div class="article-contact">
+            本文由星空水景整理编写。<br/>如需转载请注明出处并保留文章所有引用的资料来源。欢迎关注&nbsp;星空水景&nbsp;微博[微博搜索&nbsp;星空水景&nbsp;或用微博APP扫描下方二维码]。<br/><br/>
+            <img src="/static/weibo.jpg" style="width: auto; height:auto; max-width: 100%; max-height: 100%;"></img>
+    </div>
+
+</div>
+
+{{end}}

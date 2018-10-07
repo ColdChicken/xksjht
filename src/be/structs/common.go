@@ -9,18 +9,22 @@ type ListArticleFilter struct {
 	RequestCnt int64 `json:"requestCnt"`
 	// 是否包含文章内容
 	ContainContent int64 `json:"containContent"`
+	// 专栏
+	Catalog string `json:"catalog"`
 }
 
 type Article struct {
-	Id          int64  `json:"id"`
-	Title       string `json:"title"`
-	CreateTime  string `json:"createTime"`
-	EditTime    string `json:"editTime"`
-	Creater     string `json:"creater"`
-	Tags        string `json:"tags"`
-	OriginalTag int64  `json:"originalTag"`
-	Content     string `json:"content"`
-	RawContent  string `json:"rawContent"`
+	Id            int64         `json:"id"`
+	Title         string        `json:"title"`
+	CreateTime    string        `json:"createTime"`
+	EditTime      string        `json:"editTime"`
+	Creater       string        `json:"creater"`
+	Tags          string        `json:"tags"`
+	OriginalTag   int64         `json:"originalTag"`
+	Content       string        `json:"content"`
+	Catalog       string        `json:"catalog"`
+	RawContent    string        `json:"rawContent"`
+	ParsedContent *ParserResult `json:"parsedContent"`
 }
 
 type UserInfo struct {
@@ -32,6 +36,7 @@ type CreateArticleRequest struct {
 	Tags        string `json:"tags"`
 	OriginalTag int64  `json:"originalTag"`
 	RawContent  string `json:"rawContent"`
+	Catalog     string `json:"catalog"`
 }
 
 type UpdateArticleRequest struct {

@@ -10,6 +10,7 @@ import (
 	"be/structs"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 type ArticleMgr struct {
@@ -33,7 +34,7 @@ func (m *ArticleMgr) GetArticle(id int64) (*structs.Article, error) {
 		return nil, xe.New("文章不存在")
 	}
 
-	// 处理图片信息
+	// 解析及处理图片信息
 	content := &structs.ParserResult{}
 	if err := common.ParseJsonStr(article.Content, &content); err != nil {
 		log.WithFields(log.Fields{
@@ -42,6 +43,7 @@ func (m *ArticleMgr) GetArticle(id int64) (*structs.Article, error) {
 		return nil, err
 	}
 
+	refIdx := 1
 	for _, c := range content.Contents {
 		if c.Type == "ref" && c.Source == "img" {
 			picLocation, err := Pic.TranslatePic(c.Value)
@@ -55,6 +57,17 @@ func (m *ArticleMgr) GetArticle(id int64) (*structs.Article, error) {
 			}
 
 		}
+		if c.Type == "section" {
+			c.SectionLevel = int64(len(strings.Split(c.SectionID, ".")))
+		}
+		if c.Type == "block" {
+			for _, block := range c.Contents {
+				if block.Type == "block_ref" {
+					block.RefIdx = int64(refIdx)
+					refIdx++
+				}
+			}
+		}
 	}
 
 	b, err := json.Marshal(content)
@@ -67,6 +80,8 @@ func (m *ArticleMgr) GetArticle(id int64) (*structs.Article, error) {
 		article.Content = string(b)
 	}
 
+	article.ParsedContent = content
+
 	return article, nil
 }
 
@@ -77,7 +92,7 @@ func (m *ArticleMgr) ListArticles(filter *structs.ListArticleFilter) ([]*structs
 		log.Errorf("ListArticles 失败： %s", err.Error())
 		return nil, err
 	}
-	// 是否要返回文章内容，对于小程序来说不返回这个可以减少网络开销
+	// 是否要返回文章内容，对于小程序/前台等服务来说不返回这个可以减少网络开销
 	if filter.ContainContent == 0 {
 		for _, article := range articles {
 			article.Content = ""
@@ -110,7 +125,7 @@ func (m *ArticleMgr) CreateArticle(request *structs.CreateArticleRequest) error 
 	if title == "" {
 		return xe.New("文章标题不存在")
 	}
-	err = m.dao.CreateArticle(title, request.Creater, request.Tags, request.OriginalTag, string(b), request.RawContent)
+	err = m.dao.CreateArticle(title, request.Creater, request.Tags, request.OriginalTag, string(b), request.RawContent, request.Catalog)
 	if err != nil {
 		log.Errorln(err.Error())
 		return err
