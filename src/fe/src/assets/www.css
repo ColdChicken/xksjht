@@ -215,10 +215,17 @@ a.nav-item:link, a.nav-item:visited {
     height: 50px;
 }
 
+.article-qrcode {
+    margin: 50px 0 0 0;
+    color: #888888;
+    padding: 0.5rem;
+    text-align: center;
+}
+
 .article-contact {
     margin: 50px 0 0 0;
     color: #888888;
-    border: 1px dotted #576B95;
+    border-left: 1px dotted #576B95;
     padding: 0.5rem;
     text-align: center;
 }

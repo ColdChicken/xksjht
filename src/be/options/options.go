@@ -51,6 +51,9 @@ type WWWOptions struct {
 
 	// 文章的默认创建人
 	DefaultArticleCreater string
+
+	// 文章二维码
+	ArticleQRCodeURL string
 }
 
 var Options WWWOptions
@@ -75,6 +78,7 @@ func (o *WWWOptions) InitOptions() {
 	flag.StringVar(&o.CertFile, "cert_file", "./key/server.pem", "CertFile")
 	flag.StringVar(&o.KeyFile, "key_file", "./key/server.key", "KeyFile")
 	flag.BoolVar(&o.EnableTls, "enable_tls", false, "EnableTls")
+	flag.StringVar(&o.ArticleQRCodeURL, "article_qrcode_url", "http://192.168.1.102:8888/article", "ArticleQRCodeURL")
 
 	iniflags.Parse()
 }

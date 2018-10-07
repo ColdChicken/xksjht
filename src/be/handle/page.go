@@ -6,12 +6,15 @@ import (
 	"be/model"
 	"be/options"
 	"be/structs"
+	"encoding/base64"
+	"fmt"
 	"html/template"
 	"net/http"
 	"path/filepath"
 	"strconv"
 
 	"github.com/gorilla/mux"
+	qrcode "github.com/skip2/go-qrcode"
 )
 
 func templateRealPath(path string) string {
@@ -51,11 +54,13 @@ func showZiXunHtml(res http.ResponseWriter, req *http.Request) {
 	}
 
 	type Data struct {
+		XKSJTitle  string
 		PageViewed string
 		Articles   []*structs.Article
 	}
 
 	data := Data{
+		XKSJTitle:  "星空水景",
 		PageViewed: "水景资讯",
 		Articles:   articles,
 	}
@@ -85,11 +90,13 @@ func showShuiJingHtml(res http.ResponseWriter, req *http.Request) {
 	}
 
 	type Data struct {
+		XKSJTitle  string
 		PageViewed string
 		Articles   []*structs.Article
 	}
 
 	data := Data{
+		XKSJTitle:  "星空水景",
 		PageViewed: "水景欣赏",
 		Articles:   articles,
 	}
@@ -119,11 +126,13 @@ func showWenZhangHtml(res http.ResponseWriter, req *http.Request) {
 	}
 
 	type Data struct {
+		XKSJTitle  string
 		PageViewed string
 		Articles   []*structs.Article
 	}
 
 	data := Data{
+		XKSJTitle:  "星空水景",
 		PageViewed: "水景文章",
 		Articles:   articles,
 	}
@@ -153,11 +162,13 @@ func showQiTaHtml(res http.ResponseWriter, req *http.Request) {
 	}
 
 	type Data struct {
+		XKSJTitle  string
 		PageViewed string
 		Articles   []*structs.Article
 	}
 
 	data := Data{
+		XKSJTitle:  "星空水景",
 		PageViewed: "其它文章",
 		Articles:   articles,
 	}
@@ -195,14 +206,30 @@ func showArticleHtml(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// 生成文章二维码
+	articleUrl := fmt.Sprintf("%s/%d", options.Options.ArticleQRCodeURL, id)
+	var png []byte
+	png, err = qrcode.Encode(articleUrl, qrcode.Medium, 256)
+	if err != nil {
+		log.Errorf("生成文章二维码失败: %s", err.Error())
+		common.ResMsg(res, 500, "服务异常")
+		return
+	}
+	imgBase64Str := base64.StdEncoding.EncodeToString(png)
+	imgBase64Html := template.HTML(fmt.Sprintf(`<img src="data:image/png;base64,%s" style="width: auto; height:auto; max-width: 100%%; max-height: 100%%;"></img>`, imgBase64Str))
+
 	type Data struct {
+		XKSJTitle  string
 		PageViewed string
 		Article    *structs.Article
+		QRCode     template.HTML
 	}
 
 	data := Data{
+		XKSJTitle:  article.Title,
 		PageViewed: "文章内容",
 		Article:    article,
+		QRCode:     imgBase64Html,
 	}
 	tmpl.ExecuteTemplate(res, "base", data)
 }
