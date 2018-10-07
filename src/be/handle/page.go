@@ -226,7 +226,7 @@ func showArticleHtml(res http.ResponseWriter, req *http.Request) {
 	}
 
 	data := Data{
-		XKSJTitle:  article.Title,
+		XKSJTitle:  fmt.Sprintf("%s - 星空水景", article.Title),
 		PageViewed: "文章内容",
 		Article:    article,
 		QRCode:     imgBase64Html,

@@ -54,7 +54,7 @@
 
             {{ if (eq .Source "img") }}
             <div class="article-ref-img">
-                    <img src="{{.Value}}"></img>
+                    <img src="{{.Value}}" alt="{{.Content}}"></img>
                     <div class="article-ref-img-comment">
                         {{.Content}}
                     </div>
