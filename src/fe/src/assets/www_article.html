@@ -16,21 +16,21 @@
             <div class="article-block">
                 {{ range .Contents}}
                     {{ if (eq .Type "block_txt")}}
-                        <div class="article-block-txt">
+                        <p class="article-block-txt">
                             {{.Content}}
-                        </div>
+                        </p>
                     {{ end }}
 
                     {{ if (eq .Type "block_underline")}}
-                        <div class="article-block-underline">
+                        <p class="article-block-underline">
                             {{.Content}}
-                        </div>
+                        </p>
                     {{ end }}
 
                     {{ if (eq .Type "block_ref")}}
-                        <div class="article-block-ref">
+                        <p class="article-block-ref">
                             {{.Content}}&nbsp;[{{.RefIdx}}]
-                        </div>
+                        </p>
                     {{ end }}
                 {{ end }}
             </div>
@@ -39,22 +39,22 @@
         {{ if (eq .Type "ref") }}
             {{ if or (eq .Source "txt") (eq .Source "ref") }}
                 <div class="article-ref-txt">
-                    <div class="article-ref-txt-content">{{.Content}}</div>
-                    <div class="article-ref-txt-value">
+                    <p class="article-ref-txt-content">{{.Content}}</p>
+                    <p class="article-ref-txt-value">
                         ---&nbsp;{{.Value}}
-                    </div>
+                    </p>
                 </div>
             {{ end }}
 
             {{ if (eq .Source "link") }}
                 <div class="article-ref-txt">
-                    <div class="article-ref-txt-content">{{.Content}}</div>
+                    <p class="article-ref-txt-content">{{.Content}}</p>
                 </div>
             {{ end }}
 
             {{ if (eq .Source "img") }}
             <div class="article-ref-img">
-                    <img src="{{.Value}}" alt="{{.Content}}"></img>
+                    <img src="{{.Value}}" alt="{{.Content}}" title="{{.Content}}"></img>
                     <div class="article-ref-img-comment">
                         {{.Content}}
                     </div>
@@ -84,21 +84,21 @@
 
         {{ if (eq .Type "section") }}
             {{ if (eq .SectionLevel 1) }}
-                <div class="article-section-1">
+                <h1 class="article-section-1">
                     {{.Content}}
-                </div>
+                </h1>
             {{ end }}
 
             {{ if (eq .SectionLevel 2) }}
-                <div class="article-section-2">
+                <h2 class="article-section-2">
                     {{.Content}}
-                </div>
+                </h2>
             {{ end }}
 
             {{ if (eq .SectionLevel 3) }}
-                <div class="article-section-3">
+                <h3 class="article-section-3">
                     {{.Content}}
-                </div>
+                </h3>
             {{ end }}
         {{ end }}
 
@@ -124,7 +124,7 @@
                 {{.QRCode}}
         </div>
         <div class="article-contact col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                本文由星空水景整理编写。<br/>如需转载请注明出处并保留文章所有引用的资料来源。欢迎关注&nbsp;星空水景&nbsp;微博[微博搜索&nbsp;星空水景&nbsp;或扫描下方二维码]。<br/><br/>
+                本文由星空水景整理编写。<br/>如需转载请注明出处并保留文章所有引用的资料来源。<br/>欢迎关注&nbsp;星空水景&nbsp;微博[微博搜索&nbsp;星空水景&nbsp;或扫描下方二维码]。<br/><br/>
                 <img src="/static/weibo.jpg" style="width: auto; height:auto; max-width: 100%; max-height: 100%;"></img>
         </div>
     </div>
