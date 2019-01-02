@@ -54,6 +54,11 @@ type WWWOptions struct {
 
 	// 文章二维码
 	ArticleQRCodeURL string
+
+	// 星空工具id
+	XKGJId uint64
+	// 关于星空id
+	XKGYId uint64
 }
 
 var Options WWWOptions
@@ -79,6 +84,8 @@ func (o *WWWOptions) InitOptions() {
 	flag.StringVar(&o.KeyFile, "key_file", "./key/server.key", "KeyFile")
 	flag.BoolVar(&o.EnableTls, "enable_tls", false, "EnableTls")
 	flag.StringVar(&o.ArticleQRCodeURL, "article_qrcode_url", "http://192.168.1.102:8888/article", "ArticleQRCodeURL")
+	flag.Uint64Var(&o.XKGJId, "xkgj_id", 4, "XKGJ id")
+	flag.Uint64Var(&o.XKGYId, "gyxk_id", 4, "XKGYId id")
 
 	iniflags.Parse()
 }

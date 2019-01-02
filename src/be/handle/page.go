@@ -61,13 +61,13 @@ func showZiXunHtml(res http.ResponseWriter, req *http.Request) {
 
 	data := Data{
 		XKSJTitle:  "星空水景",
-		PageViewed: "水景资讯",
+		PageViewed: "水景星空",
 		Articles:   articles,
 	}
 	tmpl.ExecuteTemplate(res, "base", data)
 }
 
-func showShuiJingHtml(res http.ResponseWriter, req *http.Request) {
+func showBiJiHtml(res http.ResponseWriter, req *http.Request) {
 	tmpl, err := template.ParseFiles(templateRealPath("www_base.html"), templateRealPath("www_articles.html"), templateRealPath("www_article.html"))
 
 	if err != nil {
@@ -80,7 +80,7 @@ func showShuiJingHtml(res http.ResponseWriter, req *http.Request) {
 		CurrentPos:     0,
 		RequestCnt:     999999,
 		ContainContent: 0,
-		Catalog:        "水景",
+		Catalog:        "笔记",
 	})
 
 	if err != nil {
@@ -97,13 +97,13 @@ func showShuiJingHtml(res http.ResponseWriter, req *http.Request) {
 
 	data := Data{
 		XKSJTitle:  "星空水景",
-		PageViewed: "水景欣赏",
+		PageViewed: "星空笔记",
 		Articles:   articles,
 	}
 	tmpl.ExecuteTemplate(res, "base", data)
 }
 
-func showWenZhangHtml(res http.ResponseWriter, req *http.Request) {
+func showGongJuHtml(res http.ResponseWriter, req *http.Request) {
 	tmpl, err := template.ParseFiles(templateRealPath("www_base.html"), templateRealPath("www_articles.html"), templateRealPath("www_article.html"))
 
 	if err != nil {
@@ -112,34 +112,45 @@ func showWenZhangHtml(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	articles, err := model.Article.ListArticles(&structs.ListArticleFilter{
-		CurrentPos:     0,
-		RequestCnt:     999999,
-		ContainContent: 0,
-		Catalog:        "文章",
-	})
+	// 获取文章
+	id := int64(options.Options.XKGJId)
 
+	article, err := model.Article.GetArticle(id)
 	if err != nil {
 		log.Errorf("获取文章内容失败: %s", err.Error())
 		common.ResMsg(res, 500, "服务异常")
 		return
 	}
 
+	// 生成文章二维码
+	articleUrl := fmt.Sprintf("%s/%d", options.Options.ArticleQRCodeURL, id)
+	var png []byte
+	png, err = qrcode.Encode(articleUrl, qrcode.Medium, 256)
+	if err != nil {
+		log.Errorf("生成文章二维码失败: %s", err.Error())
+		common.ResMsg(res, 500, "服务异常")
+		return
+	}
+	imgBase64Str := base64.StdEncoding.EncodeToString(png)
+	imgBase64Html := template.HTML(fmt.Sprintf(`<img src="data:image/png;base64,%s" style="width: auto; height:auto; max-width: 100%%; max-height: 100%%;"></img>`, imgBase64Str))
+
 	type Data struct {
 		XKSJTitle  string
 		PageViewed string
-		Articles   []*structs.Article
+		Article    *structs.Article
+		QRCode     template.HTML
 	}
 
 	data := Data{
 		XKSJTitle:  "星空水景",
-		PageViewed: "水景文章",
-		Articles:   articles,
+		PageViewed: "星空工具",
+		Article:    article,
+		QRCode:     imgBase64Html,
 	}
 	tmpl.ExecuteTemplate(res, "base", data)
 }
 
-func showQiTaHtml(res http.ResponseWriter, req *http.Request) {
+func showGuanYuHtml(res http.ResponseWriter, req *http.Request) {
 	tmpl, err := template.ParseFiles(templateRealPath("www_base.html"), templateRealPath("www_articles.html"), templateRealPath("www_article.html"))
 
 	if err != nil {
@@ -148,29 +159,40 @@ func showQiTaHtml(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	articles, err := model.Article.ListArticles(&structs.ListArticleFilter{
-		CurrentPos:     0,
-		RequestCnt:     999999,
-		ContainContent: 0,
-		Catalog:        "其它",
-	})
+	// 获取文章
+	id := int64(options.Options.XKGYId)
 
+	article, err := model.Article.GetArticle(id)
 	if err != nil {
 		log.Errorf("获取文章内容失败: %s", err.Error())
 		common.ResMsg(res, 500, "服务异常")
 		return
 	}
 
+	// 生成文章二维码
+	articleUrl := fmt.Sprintf("%s/%d", options.Options.ArticleQRCodeURL, id)
+	var png []byte
+	png, err = qrcode.Encode(articleUrl, qrcode.Medium, 256)
+	if err != nil {
+		log.Errorf("生成文章二维码失败: %s", err.Error())
+		common.ResMsg(res, 500, "服务异常")
+		return
+	}
+	imgBase64Str := base64.StdEncoding.EncodeToString(png)
+	imgBase64Html := template.HTML(fmt.Sprintf(`<img src="data:image/png;base64,%s" style="width: auto; height:auto; max-width: 100%%; max-height: 100%%;"></img>`, imgBase64Str))
+
 	type Data struct {
 		XKSJTitle  string
 		PageViewed string
-		Articles   []*structs.Article
+		Article    *structs.Article
+		QRCode     template.HTML
 	}
 
 	data := Data{
 		XKSJTitle:  "星空水景",
-		PageViewed: "其它文章",
-		Articles:   articles,
+		PageViewed: "关于本站",
+		Article:    article,
+		QRCode:     imgBase64Html,
 	}
 	tmpl.ExecuteTemplate(res, "base", data)
 }

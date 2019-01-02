@@ -34,9 +34,9 @@ func initAdminPortalMapping(r *server.WWWMux) {
 	// 前台
 	r.RegistURLMapping("/", "GET", showZiXunHtml)
 	r.RegistURLMapping("/zx", "GET", showZiXunHtml)
-	r.RegistURLMapping("/sj", "GET", showShuiJingHtml)
-	r.RegistURLMapping("/wz", "GET", showWenZhangHtml)
-	r.RegistURLMapping("/qt", "GET", showQiTaHtml)
+	r.RegistURLMapping("/bj", "GET", showBiJiHtml)
+	r.RegistURLMapping("/gj", "GET", showGongJuHtml)
+	r.RegistURLMapping("/gy", "GET", showGuanYuHtml)
 	r.RegistURLMapping("/article/{id}", "GET", showArticleHtml)
 	r.RegistURLMapping("/robots.txt", "GET", showRobotsHtml)
 

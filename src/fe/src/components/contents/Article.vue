@@ -107,10 +107,8 @@
                 <label>类别:</label>
                 <div>
                       <select v-model="articleCatalog">
-                        <option value='资讯'>资讯</option>
-                        <option value='水景'>水景</option>
-                        <option value='文章'>文章</option>
-                        <option value='其它'>其它</option>
+                        <option value='资讯'>水景星空(资讯)</option>
+                        <option value='文章'>星空笔记(文章)</option>
                       </select>
                 </div>
               </div>

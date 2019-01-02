@@ -29,39 +29,39 @@
                 <div class="header">
                     <span class="title">星空水景</span>
                     <div class="nav row">
-                        {{ if (eq .PageViewed "水景资讯") }}
-                        <a href="/zx" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景资讯</a>
+                        {{ if (eq .PageViewed "水景星空") }}
+                        <a href="/zx" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景星空</a>
                         {{ else }}
-                        <a href="/zx" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景资讯</a>
+                        <a href="/zx" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景星空</a>
                         {{ end }}
 
-                        {{ if (eq .PageViewed "水景欣赏") }}
-                        <a href="/sj" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景欣赏</a>
+                        {{ if (eq .PageViewed "星空笔记") }}
+                        <a href="/bj" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">星空笔记</a>
                         {{ else }}
-                        <a href="/sj" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景欣赏</a>
+                        <a href="/bj" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">星空笔记</a>
                         {{ end }}
 
-                        {{ if (eq .PageViewed "水景文章") }}
-                        <a href="/wz" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景文章</a>
+                        {{ if (eq .PageViewed "星空工具") }}
+                        <a href="/gj" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">星空工具</a>
                         {{ else }}
-                        <a href="/wz" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景文章</a>
+                        <a href="/gj" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">星空工具</a>
                         {{ end }}
                         
-                        {{ if (eq .PageViewed "其它文章") }}
-                        <a href="/qt" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">其它文章</a>
+                        {{ if (eq .PageViewed "关于本站") }}
+                        <a href="/gy" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">关于本站</a>
                         {{ else }}
-                        <a href="/qt" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">其它文章</a>
+                        <a href="/gy" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">关于本站</a>
                         {{ end }}
                     </div>
                 </div>
 
                 <div class="content">
 
-                    {{ if or (eq .PageViewed "水景资讯") (eq .PageViewed "水景欣赏") (eq .PageViewed "水景文章") (eq .PageViewed "其它文章")  }}
+                    {{ if or (eq .PageViewed "水景星空") (eq .PageViewed "星空笔记")  }}
                     {{ template "articles" . }}
                     {{ end }}
 
-                    {{ if (eq .PageViewed "文章内容") }}
+                    {{ if or (eq .PageViewed "文章内容") (eq .PageViewed "星空工具") (eq .PageViewed "关于本站") }}
                     {{ template "article" . }}
                     {{ end }}
 
