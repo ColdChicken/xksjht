@@ -38,6 +38,10 @@ func initAdminPortalMapping(r *server.WWWMux) {
 	r.RegistURLMapping("/wz", "GET", showWenZhangHtml)
 	r.RegistURLMapping("/qt", "GET", showQiTaHtml)
 	r.RegistURLMapping("/article/{id}", "GET", showArticleHtml)
+	r.RegistURLMapping("/robots.txt", "GET", showRobotsHtml)
+
+	// 默认路由
+	r.GetRouter().NotFoundHandler = http.HandlerFunc(server.AccessLogHandler(showZiXunHtml))
 }
 
 func initAjaxMapping(r *server.WWWMux) {

@@ -175,6 +175,16 @@ func showQiTaHtml(res http.ResponseWriter, req *http.Request) {
 	tmpl.ExecuteTemplate(res, "base", data)
 }
 
+func showRobotsHtml(res http.ResponseWriter, req *http.Request) {
+	tmpl, err := template.ParseFiles(templateRealPath("robots.html"))
+	if err != nil {
+		log.Errorf("模板解析失败: %s", err.Error())
+		common.ResMsg(res, 500, "服务异常")
+		return
+	}
+	tmpl.ExecuteTemplate(res, "robots", nil)
+}
+
 func showArticleHtml(res http.ResponseWriter, req *http.Request) {
 	tmpl, err := template.ParseFiles(templateRealPath("www_base.html"), templateRealPath("www_articles.html"), templateRealPath("www_article.html"))
 

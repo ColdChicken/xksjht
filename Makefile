@@ -23,11 +23,13 @@ fe: webpack
 	cat src/fe/dist/index.html >> src/fe/dist/_index.html
 	echo "{{end}}" >> src/fe/dist/_index.html
 	rm -rf src/fe/dist/index.html
+	rm -rf src/fe/dist/robots.html
 	rm -rf src/fe/dist/www_base.html
 	rm -rf src/fe/dist/www_articles.html
 	rm -rf src/fe/dist/www_article.html
 	mv src/fe/dist/_index.html src/fe/dist/index.html
 	cp src/fe/src/assets/login.html src/fe/dist/login.html
+	cp src/fe/src/assets/robots.html src/fe/dist/robots.html
 	cp src/fe/src/assets/www_base.html src/fe/dist/www_base.html
 	cp src/fe/src/assets/www_articles.html src/fe/dist/www_articles.html
 	cp src/fe/src/assets/www_article.html src/fe/dist/www_article.html
