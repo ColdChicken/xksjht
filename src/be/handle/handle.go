@@ -19,6 +19,10 @@ func InitHandle(r *server.WWWMux) {
 	initAjaxMapping(r)
 	// api相关的接口
 	initAPIMapping(r)
+
+	// 代理
+	r.SetProxy("/v1/tp/{catalog}/{action}", options.Options.SweetFishAddress)
+	r.SetProxy("/v1/tp/{catalog}/{action}/{detail}", options.Options.SweetFishAddress)
 }
 
 func initStaticFileMapping(r *server.WWWMux) {

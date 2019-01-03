@@ -2,6 +2,8 @@ package server
 
 import (
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"reflect"
 	"runtime"
 
@@ -38,4 +40,21 @@ func (m *WWWMux) RegistURLMapping(path string, method string, handle func(http.R
 	}).Info("注册URL映射")
 	handle = AccessLogHandler(handle)
 	m.r.HandleFunc(path, handle).Methods(method)
+}
+
+// 代理的handler
+func handler(p *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Debugln("代理请求")
+		p.ServeHTTP(w, r)
+	}
+}
+
+func (m *WWWMux) SetProxy(path string, targetAddress string) {
+	remote, err := url.Parse(targetAddress)
+	if err != nil {
+		log.Errorf("代理注册失败 %s", targetAddress)
+	}
+	proxy := httputil.NewSingleHostReverseProxy(remote)
+	m.r.HandleFunc(path, handler(proxy))
 }

@@ -59,6 +59,9 @@ type WWWOptions struct {
 	XKGJId uint64
 	// 关于星空id
 	XKGYId uint64
+
+	// SweetFish代理
+	SweetFishAddress string
 }
 
 var Options WWWOptions
@@ -86,6 +89,7 @@ func (o *WWWOptions) InitOptions() {
 	flag.StringVar(&o.ArticleQRCodeURL, "article_qrcode_url", "http://192.168.1.102:8888/article", "ArticleQRCodeURL")
 	flag.Uint64Var(&o.XKGJId, "xkgj_id", 4, "XKGJ id")
 	flag.Uint64Var(&o.XKGYId, "gyxk_id", 4, "XKGYId id")
+	flag.StringVar(&o.SweetFishAddress, "sweet_fish_address", "http://192.168.1.128:8888", "SweetFishAddress")
 
 	iniflags.Parse()
 }

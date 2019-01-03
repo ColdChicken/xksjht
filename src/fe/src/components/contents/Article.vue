@@ -109,6 +109,7 @@
                       <select v-model="articleCatalog">
                         <option value='资讯'>水景星空(资讯)</option>
                         <option value='文章'>星空笔记(文章)</option>
+                        <option value='内部'>内部文章</option>
                       </select>
                 </div>
               </div>
