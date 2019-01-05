@@ -1,0 +1,85 @@
+{{define "base"}}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="星空水景">
+    <meta name="author" content="ColdChicken [646543317@qq.com]">
+
+    <title>{{.XKSJTitle}}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/www.css?v=1" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="row" style="margin-left: 0; margin-right: 0;">
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-3 col-xl-3"></div>
+
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-6 col-xl-6">
+            <div class="page">
+                <div class="header">
+                    <span class="title">星空水景</span>
+                    <div class="nav row">
+                        {{ if (eq .PageViewed "水景星空") }}
+                        <a href="/zx" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景星空</a>
+                        {{ else }}
+                        <a href="/zx" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">水景星空</a>
+                        {{ end }}
+
+                        {{ if (eq .PageViewed "星空笔记") }}
+                        <a href="/bj" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">星空笔记</a>
+                        {{ else }}
+                        <a href="/bj" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">星空笔记</a>
+                        {{ end }}
+
+                        {{ if (eq .PageViewed "星空工具") }}
+                        <a href="/gj" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">星空工具</a>
+                        {{ else }}
+                        <a href="/gj" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">星空工具</a>
+                        {{ end }}
+                        
+                        {{ if (eq .PageViewed "关于本站") }}
+                        <a href="/gy" class="nav-item nav-active col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">关于本站</a>
+                        {{ else }}
+                        <a href="/gy" class="nav-item col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">关于本站</a>
+                        {{ end }}
+                    </div>
+                </div>
+
+                <div class="content">
+
+                    {{ if or (eq .PageViewed "水景星空") (eq .PageViewed "星空笔记")  }}
+                    {{ template "articles" . }}
+                    {{ end }}
+
+                    {{ if or (eq .PageViewed "文章内容") (eq .PageViewed "星空工具") (eq .PageViewed "关于本站") }}
+                    {{ template "article" . }}
+                    {{ end }}
+
+                </div>
+
+                <div class="footer">
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-3 col-xl-3"></div>
+    </div>
+    <div class="height50"></div>
+    <script>
+
+    </script>
+  </body>
+</html>
+
+{{end}}
