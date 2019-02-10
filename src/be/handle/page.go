@@ -80,7 +80,7 @@ func showBiJiHtml(res http.ResponseWriter, req *http.Request) {
 		CurrentPos:     0,
 		RequestCnt:     999999,
 		ContainContent: 0,
-		Catalog:        "笔记",
+		Catalog:        "文章",
 	})
 
 	if err != nil {

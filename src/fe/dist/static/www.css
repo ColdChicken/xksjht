@@ -171,7 +171,7 @@ a.nav-item:link, a.nav-item:visited {
 }
 
 .article-ref-txt-content {
-    white-space: pre-line;
+    white-space: pre;
 }
 
 .article-ref-txt-value {

@@ -62,8 +62,7 @@ func (p *Parser) GetResult() *structs.ParserResult {
 func (p *Parser) parse() error {
 	for _, line := range p.lines {
 		log.Debugln(line)
-		line = strings.TrimSpace(line)
-		if line == "" {
+		if strings.TrimSpace(line) == "" {
 			continue
 		}
 		// 是否处于引用

@@ -116,7 +116,7 @@ func (d *ArticleDao) ListArticlesByFilter(filter *structs.ListArticleFilter) ([]
 		sql := `SELECT id, title, createTime, editTime, creater, tags, originalTag, content, rawContent, catalog 
 				FROM ARTICLE
 				WHERE tags=? AND isDeleted=0 AND catalog=?
-				ORDER BY id DESC
+				ORDER BY editTime DESC
 				LIMIT ?, ?`
 		if stmt, err := tx.Prepare(sql); err != nil {
 			log.WithFields(log.Fields{
@@ -158,7 +158,7 @@ func (d *ArticleDao) ListArticlesByFilter(filter *structs.ListArticleFilter) ([]
 		sql := `SELECT id, title, createTime, editTime, creater, tags, originalTag, content, rawContent, catalog 
 				FROM ARTICLE
 				WHERE isDeleted=0 AND catalog=?
-				ORDER BY id DESC
+				ORDER BY editTime DESC
 				LIMIT ?, ?`
 		if stmt, err := tx.Prepare(sql); err != nil {
 			log.WithFields(log.Fields{
@@ -200,7 +200,7 @@ func (d *ArticleDao) ListArticlesByFilter(filter *structs.ListArticleFilter) ([]
 		sql := `SELECT id, title, createTime, editTime, creater, tags, originalTag, content, rawContent, catalog 
 				FROM ARTICLE
 				WHERE isDeleted=0 
-				ORDER BY id DESC
+				ORDER BY editTime DESC
 				LIMIT ?, ?`
 		if stmt, err := tx.Prepare(sql); err != nil {
 			log.WithFields(log.Fields{
